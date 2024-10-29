@@ -206,12 +206,9 @@ void SevenSegment::DisplayBlank()
 
 ### 4.แสดงผลการทำ
 ผลการทดลอง 
-https://drive.google.com/file/d/1Vekm42afDLENbyiTBc_-TrrS07xCKjlp/view?usp=sharing
 
 
 ### 5.สรุปผล
-การกระพริบ Segment ทั้งหมด: ในลูป for โค้ดจะกระพริบ segment ทั้งหมดพร้อมกัน 3 ครั้ง 
-การเปิด-ปิดทีละ Segment ด้วยดีเลย์ที่สั้นลง: ปรับ vTaskDelay ให้สั้นลงเพื่อให้ไล่เปิด-ปิดได้เร็วขึ้น 
-การกระพริบ digit_2 ก่อนปิดการทดสอบ: กระพริบ digit_2 เพื่อเป็นการจบการทดสอบ
+
 
 
