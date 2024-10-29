@@ -1,37 +1,5 @@
-# _Sample project_
 
-(See the README.md file in the upper level 'examples' directory for more information about examples.)
-
-This is the simplest buildable example. The example is used by command `idf.py create-project`
-that copies the project to user specified path and set it's name. For more information follow the [docs page](https://docs.espressif.com/projects/esp-idf/en/latest/api-guides/build-system.html#start-a-new-project)
-
-
-
-## How to use example
-We encourage the users to use the example as a template for the new projects.
-A recommended way is to follow the instructions on a [docs page](https://docs.espressif.com/projects/esp-idf/en/latest/api-guides/build-system.html#start-a-new-project).
-
-## Example folder contents
-
-The project **sample_project** contains one source file in C language [main.c](main/main.c). The file is located in folder [main](main).
-
-ESP-IDF projects are built using CMake. The project build configuration is contained in `CMakeLists.txt`
-files that provide set of directives and instructions describing the project's source files and targets
-(executable, library, or both). 
-
-Below is short explanation of remaining files in the project folder.
-
-```
-├── CMakeLists.txt
-├── main
-│   ├── CMakeLists.txt
-│   └── main.c
-└── README.md                  This is the file you are currently reading
-```
-Additionally, the sample project contains Makefile and component.mk files, used for the legacy Make based build system. 
-They are not used or needed when building with CMake and idf.py.
-
-# แนวทางการทำงาน ESP32_ESP-IDF_WiFi-STA cook book 2
+# แนวทางการทำงาน ESP32_ESP-IDF_7Segment cook book 3
 ### 1.ระบุตัวอย่างที่ใช้ ว่าเอามาจากตัวอย่างไหน
  ![image](https://github.com/user-attachments/assets/3fe42a91-f4c6-4e0b-acb1-eb19f0c37037)
 ### 2.2. ระบุว่า จะแก้ไขตรงไหนบ้าง เพื่ออะไร
@@ -154,6 +122,88 @@ extern "C" void app_main(void)
 
 
 ```
+
+สร้าง idf component ใหม่ ตามขั้นตอนดังรูป
+-view -> command Palette -> เลือก ESP-IDF: Create New ESP-IDF Component 
+ ![image](https://github.com/user-attachments/assets/bab69290-3da4-4cca-8a34-3be8b60ff822)
+![image](https://github.com/user-attachments/assets/64870760-029f-4bd4-93d8-fb00e8e32dca)
+
+เมื่อสร้างเสร็จจะปรากฏ โฟลเดอร์ Components/SevenSegment ดังรูป จากนั้นทำการแก้ไขโค้ด ในไฟล์ 
+CMakeLists.txt เปลี่ยนจาก SevenSegment.c เป็น SevenSegment.cpp
+ ![image](https://github.com/user-attachments/assets/b56909cd-54d7-43e1-bbed-3918d7d9d746)
+
+เมื่อทำตามขั้นตอนข้างต้นครบแล้วให้ทำการ ทดสอบ build โปรแกรม เมื่อ build ผ่าจะแสดงผลดังรูปข้างล่าง
+ ![image](https://github.com/user-attachments/assets/0b40f4e6-055b-498f-9bf1-18bbf16e7df8)
+
+สร้าง คลาสสำหรับ 7 segment
+-ประกาศคลาสในไฟล์ SevenSegment.h
+ ![image](https://github.com/user-attachments/assets/337df3bb-f979-4f2b-8221-95d7f47eff13)
+
+```cpp
+#include "LED.h"
+#include "freertos/FreeRTOS.h"
+#include "freertos/task.h"
+class SevenSegment
+{
+    int common_pin;
+    LED seg_a = LED(16);
+    LED seg_b = LED(17);
+    LED seg_c = LED(5);
+    LED seg_d = LED(18);
+    LED seg_e = LED(19);
+    LED seg_f = LED(21);
+    LED seg_g = LED(22);
+    LED common = LED(common_pin);
+public:
+    SevenSegment(int pin)
+    {
+        common_pin = pin;
+        common = LED(common_pin);
+    } 
+    void HardwareTest();
+    void DisplayBlank();
+};
+
+```
+เพิ่ม function ใน SevenSegment.cpp
+![image](https://github.com/user-attachments/assets/73d07258-5fce-40d6-9c19-6eb6f8114417)
+``` cpp
+#include <stdio.h>
+#include "SevenSegment.h"
+
+void SevenSegment::HardwareTest()
+{
+    common.ON();
+    seg_a.ON();
+    vTaskDelay(500/portTICK_PERIOD_MS);
+    seg_b.ON();
+    vTaskDelay(500/portTICK_PERIOD_MS);
+    seg_c.ON();
+    vTaskDelay(500/portTICK_PERIOD_MS);
+    seg_d.ON();
+    vTaskDelay(500/portTICK_PERIOD_MS);
+    seg_e.ON();
+    vTaskDelay(500/portTICK_PERIOD_MS);
+    seg_f.ON();
+    vTaskDelay(500/portTICK_PERIOD_MS);
+    seg_g.ON();
+    vTaskDelay(500/portTICK_PERIOD_MS);
+}
+
+void SevenSegment::DisplayBlank()
+{
+    common.ON();
+    seg_a.OFF();
+    seg_b.OFF();
+    seg_c.OFF();
+    seg_d.OFF();
+    seg_e.OFF();
+    seg_f.OFF();
+    seg_g.OFF();
+}
+```
+
+
 ### 4.แสดงผลการทำ
 ผลการทดลอง 
 https://drive.google.com/file/d/1Vekm42afDLENbyiTBc_-TrrS07xCKjlp/view?usp=sharing
