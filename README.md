@@ -204,11 +204,41 @@ void SevenSegment::DisplayBlank()
 ```
 
 
+เพิ่มโค้ดลงในไฟล์ main.cpp 
+
+``` cpp
+#include <stdio.h>
+#include "SevenSegment.h"
+
+SevenSegment s1(0);  // จอแสดงผลตัวที่ 1
+SevenSegment s2(4);  // จอแสดงผลตัวที่ 2
+
+extern "C" void app_main(void)
+{
+    while(1)   
+    {
+        // ทดสอบฮาร์ดแวร์ s1 และแสดงหน้าจอว่างเปล่า
+        s1.HardwareTest();
+        vTaskDelay(500 / portTICK_PERIOD_MS);
+        s1.DisplayBlank();
+        vTaskDelay(500 / portTICK_PERIOD_MS);
+
+        // ทดสอบฮาร์ดแวร์ s2 และแสดงหน้าจอว่างเปล่า
+        s2.HardwareTest();
+        vTaskDelay(500 / portTICK_PERIOD_MS);
+        s2.DisplayBlank();
+        vTaskDelay(500 / portTICK_PERIOD_MS);
+    } 
+}
+```
+
 ### 4.แสดงผลการทำ
 ผลการทดลอง 
-
+https://drive.google.com/file/d/1yTcsO1g2EdvgkfkDI3fJ4NlbjaWSU18R/view?usp=sharing
 
 ### 5.สรุปผล
+โค้ดใช้ฟังก์ชัน HardwareTest() เพื่อตรวจสอบการทำงานของเซกเมนต์แต่ละตัวใน s1 และ s2 โดยการเปิดเซกเมนต์ทีละตัวอย่างต่อเนื่อง ช่วยยืนยันว่าแต่ละอันทำงานได้ถูกต้อง
+หลังจากการทดสอบฮาร์ดแวร์ของแต่ละจอแสดงผล จะมีการแสดงหน้าจอว่างเปล่าด้วยฟังก์ชัน DisplayBlank() เพื่อให้เซกเมนต์ทั้งหมดดับลง
 
 
 
